@@ -1,0 +1,32 @@
+{
+  "name": "pym",
+  "version": "1.0.0",
+  "description": "A microservice that serves images and resizes them according to the request. The name is from the movie Ant-Man. Pym (Dr. Hank Pym) is the name of the doctor that shrunk Scott Lang.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch & nodemon dist",
+    "lint": "eslint src --ext ts",
+    "tsc": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^8.0.47",
+    "express": "^4.16.2",
+    "mkdirp": "^0.5.1",
+    "nodemon": "^1.12.1",
+    "sharp": "^0.18.4"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.47",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "tsc": "^1.20150623.0",
+    "typescript": "^2.5.3",
+    "typescript-eslint-parser": "^8.0.1"
+  }
+}
