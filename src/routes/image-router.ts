@@ -1,9 +1,7 @@
-import {Router, Request, Response} from 'express';
-import * as fs from 'fs'
-import * as sharp from 'sharp';
-import * as mkdirp from 'mkdirp';
+import {Router, Request, Response} from 'express'
+import * as co from 'co'
 
-import RequestImage from "../models/request-image";
+import RequestImage from "../models/request-image"
 
 class ImageRouter {
   router: Router
@@ -11,65 +9,69 @@ class ImageRouter {
   private config: object
 
   constructor(config) {
-    this.router = Router();
+    this.router = Router()
     this.config = config
-    this.init();
+    this.init()
   }
 
   init() {
-    this.router.get('/:image', this.getImage.bind(this));
+    this.router.get('/:image', this.getImage.bind(this))
   }
+  private getImage(req: Request, res: Response): void {
+    let image
+    try {
+      image = new RequestImage(req.params.image, req.query.size, this.config)
+    } catch (e) {
+      console.log(e.message)
+      res.writeHead(400)
+      res.end()
+      return
+    }
 
-  private getCachedImage(image: RequestImage): Buffer {
+    let img
     if (image.hasSize()) {
       try {
-        return fs.readFileSync(`${this.config['CacheFolder']}/${image.size.toString()}/${image.name}`)
+        img = image.getCachedImage()
+        res.writeHead(200, {'Content-Type': `image/${image.getFileType(image.name).substring(1)}`});
+        res.end(img, 'binary');
+        return
       } catch (e) {
         console.log(e.message)
       }
-    } else {
-      return fs.readFileSync(`${this.config['ImagesFolder']}/${image.name}`)
-    }
-  }
 
-  private getImage(req: Request, res: Response) {
-     const image = new RequestImage(req.params.image, req.query.size, this.config)
-
-    // Checking if the file type is in the accepted file types
-    if (!image.isAcceptedFileType()) {
-      console.log("Filetype not accepted.")
-      res.writeHead(400);
-      res.end();
-    }
-
-    if (!image.isAcceptedSize()) {
-      console.log("Size not accepted.")
-      res.writeHead(400);
-      res.end();
-    }
-
-    const img = this.getCachedImage(image)
-    if (img) {
-      res.writeHead(200, {'Content-Type': 'image/png'});
-      res.end(img, 'binary');
-    } else {
-      mkdirp.sync(`${this.config['CacheFolder']}/${image.size.toString()}`)
-      sharp(fs.readFileSync(`${this.config['ImagesFolder']}/${image.name}`))
-        .resize(image.size.width, image.size.height)
-        .toFile(`${this.config['CacheFolder']}/${image.size.toString()}/${image.name}`, (err, info) => {
-          if (err) {
-            console.log(err.message)
-            res.writeHead(500);
-            res.end();
-          } else {
-            res.writeHead(200, {'Content-Type': 'image/png'});
-            res.end(this.getCachedImage(image), 'binary');
+      if (!img) {
+        co (function *(){
+          try {
+            img = yield image.generateCachedImage()
+            res.writeHead(200, {'Content-Type': `image/${image.getFileType(image.name).substring(1)}`});
+            res.end(img, 'binary');
+          } catch (e) {
+            console.log(e.message)
+            res.writeHead(500)
+            res.end()
+            return
           }
-        });
+        }).catch((e) => {
+          console.log(e.message)
+          res.writeHead(500)
+          res.end()
+          return
+        })
+      }
+    } else {
+      try {
+        img = image.getImage()
+        res.writeHead(200, {'Content-Type': `image/${image.getFileType(image.name).substring(1)}`});
+        res.end(img, 'binary');
+        return
+      } catch (e) {
+        console.log(e.message)
+        res.writeHead(404)
+        res.end()
+        return
+      }
     }
-
   }
-
 }
 
 export default ImageRouter

@@ -2,6 +2,6 @@
   "Port": 3000,
   "ImagesFolder": "images",
   "CacheFolder": "cache",
-  "AcceptedFileTypes": ["jpg", "jpeg", "png", "gif"],
+  "AcceptedFileTypes": ["jpg", "jpeg", "png"],
   "MaxResolution": "500x500"
 }

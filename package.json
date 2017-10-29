@@ -7,7 +7,9 @@
     "build": "tsc",
     "dev": "tsc --watch & nodemon dist",
     "lint": "eslint src --ext ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "watch": "tsc --watch",
+    "nodemon": "nodemon dist"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.47",
+    "co": "^4.6.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
