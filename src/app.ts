@@ -1,8 +1,10 @@
 import * as express from 'express'
 
 import RequestImage from './models/request-image'
-import Size from "./models/size";
-import ImageRouter from "./routes/image-router";
+
+import Size from './models/size';
+import ImageRouter from './routes/image-router';
+import StatRouter from './routes/stat-router'
 
 class App {
   public express: express
@@ -16,6 +18,7 @@ class App {
 
   private routes(): void {
     this.express.use('/image', new ImageRouter(this.config).router);
+    this.express.use('/stats', new StatRouter(this.config).router);
     this.express.use(function (req, res) {
       res.sendStatus(404);
     });
