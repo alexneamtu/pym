@@ -9,6 +9,8 @@ In order to run the service inside a container run the following commands:
 `docker run -p 3000:3000 pym`
 
 ## Running the code
+Run `npm i` to install the node_modules dependencies.
+
 For development use `npm run dev`
 
 To run the tests run `npm test`
