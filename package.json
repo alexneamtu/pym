@@ -5,17 +5,23 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch & nodemon dist",
+    "dev": "tsc --watch & nodemon dist/src",
     "lint": "eslint src --ext ts",
     "tsc": "tsc",
     "watch": "tsc --watch",
-    "nodemon": "nodemon dist"
+    "nodemon": "nodemon dist",
+    "test": "tsc && mocha dist/**/*.spec.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "@types/node": "^8.0.47",
+    "express": "^4.16.2",
+    "nodemon": "^1.12.1"
+  },
   "devDependencies": {
+    "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.47",
     "co": "^4.6.0",
     "eslint": "^4.9.0",
@@ -24,9 +30,11 @@
     "eslint-plugin-promise": "^3.6.0",
     "express": "^4.16.2",
     "mkdirp": "^0.5.1",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "recursive-readdir": "^2.2.1",
     "sharp": "^0.18.4",
+    "supertest": "^3.0.0",
     "tsc": "^1.20150623.0",
     "typescript": "^2.5.3",
     "typescript-eslint-parser": "^8.0.1"

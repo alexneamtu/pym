@@ -1,6 +1,6 @@
 import App from './app'
 
-const appConfig = require('../config/app.json')
+const appConfig = require('../../config/app.json')
 
 const port = process.env.PORT || appConfig.Port
 

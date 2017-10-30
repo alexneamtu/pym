@@ -9,4 +9,4 @@ RUN npm i
 RUN npm run build
 
 EXPOSE 3000
-ENTRYPOINT node dist/index.js
+ENTRYPOINT node dist/src/index.js
